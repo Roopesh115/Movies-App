@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        .navbar-nav .nav-item {
+            margin-left: 1rem; /* Space out nav items */
+        }
+        .navbar-nav .btn {
+            padding: 0.5rem 1rem; /* Adjust button padding */
+        }
+         .alert-custom {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 0;
+            border-radius: 50px;
+            z-index: 1050; /* Make sure it stays above other content */
+            width: 100%; /* Full width if you want it to span across */
+            max-width: 400px; /* Optional: limit the width */
+        }
+        .alert-custom .container {
+            padding: 10px;
+
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark border-bottom border-body">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'movieapp:index' %}">Movies App</a>
+            <!-- Toggle button for mobile view -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Navbar contents -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'movieapp:index' %}">Browse Movies</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'movieapp:add_movie' %}">Add Movie</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile_view' %}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{% url 'logout' %}" method="post" class="mb-0">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger">Logout</button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'register' %}" class="nav-link">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+
+                <!-- Search bar added here -->
+                <form class="d-flex ms-auto" role="search" method="get" action="{% url 'movieapp:index' %}">
+                    <input class="form-control me-2" type="search" placeholder="Search movies..." aria-label="Search" name="q" value="{{ request.GET.q }}">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+
+{% block body %}
+{% endblock %}
+ <div class="alert alert-success alert-custom" role="alert">
+        <div class="container text-center">
+            <strong>Hello {{ user.username }}, Welcome to Movies App!</strong>
+        </div>
+    </div>
+<!-- Ensure Popper.js and Bootstrap JS are loaded -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<!-- Popper.js (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<!-- Bootstrap JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

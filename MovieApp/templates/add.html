@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Card Component -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Add New Movie</h5>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Movie Title</label>
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter movie title" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="year" class="form-label">Release Year</label>
+                                    <input type="number" name="year" id="year" class="form-control" placeholder="Enter release year" min="1900" max="{{ current_year }}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="desc" class="form-label">Description</label>
+                                    <textarea name="desc" id="desc" class="form-control" placeholder="Enter movie description" rows="3" required></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="img" class="form-label">Poster</label>
+                                    <input type="file" name="img" id="img" class="form-control" accept="image/*" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="actors" class="form-label">Actors</label>
+                                    <input type="text" name="actors" id="actors" class="form-control" placeholder="Enter actors" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="categories" class="form-label">Categories</label>
+                                    <select name="categories" id="categories" class="form-control" multiple required>
+                                        {% for category in categories %}
+                                            <option value="{{ category.id }}">{{ category.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="trailer" class="form-label">YouTube Trailer Link</label>
+                                    <input type="url" name="trailer" id="trailer" class="form-control" placeholder="Enter YouTube trailer link" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- End Card Component -->
+        </div>
+    </div>
+</div>
+{% endblock %}

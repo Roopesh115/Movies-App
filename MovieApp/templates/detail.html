@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Movie Card -->
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <img src="{{ movie.img.url }}" class="card-img-top" alt="Image not available" style="height: 500px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ movie.name }}</h5>
+                    <p class="card-text">{{ movie.desc }}</p>
+                    <p class="card-text"><small class="text-muted">Released in {{ movie.year }}</small></p>
+                    {% if user == movie.added_by %}
+                        <div class="d-flex justify-content-between mb-3">
+                            <a class="btn btn-primary" href="{% url 'movieapp:update' movie.id %}">Update</a>
+                            <a class="btn btn-danger" href="{% url 'movieapp:delete' movie.id %}">Delete</a>
+                        </div>
+                    {% endif %}
+
+                    <!-- Reviews Section -->
+                    <div class="container mt-4">
+                        <h3>Reviews for {{ movie.name }}</h3>
+                        {% if reviews %}
+                            <div class="list-group">
+                                {% for review in reviews %}
+                                    <div class="list-group-item">
+                                        <h5 class="mb-1">{{ review.user.username }}</h5>
+                                        <p class="mb-1">Rating: {{ review.rating }}</p>
+                                        <p class="mb-1">{{ review.comment }}</p>
+                                        <small class="text-muted">Reviewed on {{ review.created_at }}</small>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p>No reviews yet.</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Add Review Form -->
+                    <div class="container mt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="mb-0">Leave a Review</h3>
+                            </div>
+                            <div class="card-body">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        {{ form.as_p }}
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
